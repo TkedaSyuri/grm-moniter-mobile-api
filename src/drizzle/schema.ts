@@ -7,17 +7,12 @@ import {
     timestamp
   } from 'drizzle-orm/pg-core';
   
-  /**
-   * Floor テーブル
-   */
+   //Floor テーブル
   export const floor = pgTable('Floor', {
     id: serial('id').primaryKey(),
     floorNumber: integer('floorNumber').unique(),
   });
-  
-  /**
-   * Room テーブル
-   */
+  //Room テーブル
   export const room = pgTable('Room', {
     id: serial('id').primaryKey(),
     roomNumber: varchar('roomNumber', { length: 255 }),
@@ -26,9 +21,7 @@ import {
     floorId: integer('floorId').references(() => floor.floorNumber),
   });
   
-  /**
-   * Staff テーブル
-   */
+  //Staff　テーブル
   export const staff = pgTable('Staff', {
     staffId: serial('staffId').primaryKey(),
     staffName: varchar('staffName', { length: 255 }),
@@ -36,18 +29,14 @@ import {
     password: varchar('password', { length: 255 }),
   });
   
-  /**
-   * Task テーブル
-   */
+   // Task テーブル
   export const task = pgTable('Task', {
     id: serial('id').primaryKey(),
     task: varchar('task', { length: 255 }),
     isCompleted: boolean('isCompleted').default(false),
   });
   
-  /**
-   * Chat テーブル
-   */
+   //Chat テーブル
   export const chat = pgTable('Chat', {
     id: serial('id').primaryKey(),
     message: varchar('message', { length: 255 }),
