@@ -11,7 +11,7 @@ app.get('/', async (c) => {
     const allTasks = await db.select().from(task)  
     return c.json(allTasks,200)
   }catch(e){
-    return c.json({message:"データの取得に失敗"},200)
+    return c.json({message:"データの取得に失敗"},500)
   }
   })
 
@@ -22,8 +22,7 @@ app.put("/complete-task/:id",async (c)=>{
     await db.update(task).set({isCompleted:true}).where(eq(task.id,id))
     return c.json({message:"データの更新に成功"},200)
   }catch(e){
-    return c.json({message:"データの更新に失敗"},200)
-
+    return c.json({message:"データの更新に失敗"},500)
   }
 })
 
