@@ -8,8 +8,8 @@ const app = new Hono()
 
 app.get('/', async (c) => {
   try{
-    const allTask = await db.select().from(task)  
-    return c.json(allTask,200)
+    const allTasks = await db.select().from(task)  
+    return c.json(allTasks,200)
   }catch(e){
     return c.json({message:"データの取得に失敗"},200)
   }
