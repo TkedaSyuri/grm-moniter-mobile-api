@@ -1,34 +1,63 @@
 import { Hono } from "hono";
 import { db } from "../db/database";
-import { floor, room } from "../drizzle/schema";
-import { eq } from "drizzle-orm";
+import { room } from "../drizzle/schema";
+import { eq} from "drizzle-orm";
 
 const app = new Hono();
 
-app.get("/:id", async (c) => {
-  const floorNumber = parseInt(c.req.param("id"));
-  try {
-    const roomData = await db
-      .select()
-      .from(room)
-      .innerJoin(floor, eq(room.floorId, floor.floorNumber))
-      .where(eq(floor.floorNumber, floorNumber))
-      .orderBy(room.id);
-    return c.json(roomData,200);
-  } catch (e) {
-  return  c.json({ err: e, message: "データを取得できませんでした" }, 500);
-  }
-});
+app.get('/:id', async (c) => {
+    const floorNumber = Number(c.req.param('id'))
+  
+    try {
+      const rooms = await db
+        .select()
+        .from(room)
+        .where(eq(room.floorId, floorNumber))
+        .orderBy(room.id)
 
+        return c.json(rooms, 200);
+    } catch (err) {
+      console.error(err)
+      return c.json({ message: 'データを取得できませんでした' }, 500)
+    }
+  })
 app.put("/room-state/:id", async (c) => {
-  const id = parseInt(c.req.param("id"));
+  const RoomId = parseInt(c.req.param("id"));
   const { roomState } = await c.req.json<typeof room.$inferInsert>();
   try {
-    await db.update(room).set({ roomState }).where(eq(room.id, id));
+    await db.update(room).set({ roomState }).where(eq(room.id, RoomId));
     return c.json({ message: "データの更新に成功しました" }, 200);
   } catch (e) {
-   return c.json({ err: e, message: "データを更新できませんでした" }, 500);
+    return c.json({ err: e, message: "データを更新できませんでした" }, 500);
   }
 });
 
-export default app;
+app.put("/is-consecutive-nights/:id", async (c) => {
+    const isConsecutiveId = parseInt(c.req.param("id"));
+  
+    try {
+      const currentIsConsecutiveNight= await db
+        .select({ isConsecutiveNight: room.isConsecutiveNight })
+        .from(room)
+        .where(eq(room.id, isConsecutiveId))
+        .then(res => res[0]); 
+  
+  
+      const changedIsConsecutiveNight = !currentIsConsecutiveNight.isConsecutiveNight;
+  
+      await db
+        .update(room)
+        .set({ isConsecutiveNight: changedIsConsecutiveNight })
+        .where(eq(room.id, isConsecutiveId));
+  
+      return c.json({
+        message: "データの更新に成功しました",
+      }, 200);
+  
+    } catch (e) {
+      console.error(e);
+      return c.json({ err: String(e), message: "データを更新できませんでした" }, 500);
+    }
+  });
+
+  export default app;
