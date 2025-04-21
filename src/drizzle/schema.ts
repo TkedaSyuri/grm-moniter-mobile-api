@@ -21,7 +21,7 @@ import {
     floorId: integer('floorId').references(() => floor.floorNumber),
   });
   
-  //Staff　テーブル
+  //Staff テーブル
   export const staff = pgTable('Staff', {
     staffId: serial('staffId').primaryKey(),
     staffName: varchar('staffName', { length: 255 }),
