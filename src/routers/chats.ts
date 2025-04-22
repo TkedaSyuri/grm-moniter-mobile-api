@@ -16,6 +16,7 @@ app.get('/', async (c) => {
   })
 
   app.post("/create",async (c)=>{
+    console.log("dsfa")
     const {newMessage} = await c.req.json<{newMessage:string}>()
     try{
          await db.insert(chat).values({message:newMessage})
