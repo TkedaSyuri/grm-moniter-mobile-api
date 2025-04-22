@@ -18,8 +18,10 @@ app.get('/', async (c) => {
 
 app.put("/complete-task/:id",async (c)=>{
   const id = parseInt(c.req.param("id"));
+  const {isCompleted} = await c.req.json<{isCompleted:boolean}>();
+  const reverseIsCompleted = !isCompleted
   try{
-    await db.update(task).set({isCompleted:true}).where(eq(task.id,id))
+    await db.update(task).set({isCompleted:reverseIsCompleted}).where(eq(task.id,id))
     return c.json({message:"データの更新に成功"},200)
   }catch(e){
     return c.json({message:"データの更新に失敗"},500)
