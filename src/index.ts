@@ -13,7 +13,7 @@ app.route("/api/task",taskRoute)
 app.route("/api/chat",chatRoute)
 
 
-console.log("✅ サーバー起動中 http://localhost:8080")
+console.log("サーバー起動中 http://localhost:8080")
 
 serve({
   fetch: app.fetch,
