@@ -2,10 +2,11 @@ import { Hono } from "hono";
 import { db } from "../db/database";
 import { room } from "../drizzle/schema";
 import { eq} from "drizzle-orm";
+import type { Context } from 'hono'
 
 const app = new Hono();
 
-app.get('/:id', async (c) => {
+app.get('/:id', async (c:Context) => {
     const floorNumber = Number(c.req.param('id'))
   
     try {
@@ -21,7 +22,7 @@ app.get('/:id', async (c) => {
       return c.json({ message: 'データを取得できませんでした' }, 500)
     }
   })
-app.put("/room-state/:id", async (c) => {
+app.put("/room-state/:id", async (c:Context) => {
   const RoomId = parseInt(c.req.param("id"));
   const { roomState } = await c.req.json<typeof room.$inferInsert>();
   try {
@@ -32,7 +33,7 @@ app.put("/room-state/:id", async (c) => {
   }
 });
 
-app.put("/is-consecutive-nights/:id", async (c) => {
+app.put("/is-consecutive-nights/:id", async (c:Context) => {
     const isConsecutiveId = parseInt(c.req.param("id"));
   
     try {

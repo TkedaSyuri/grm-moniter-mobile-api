@@ -3,10 +3,11 @@ import { Hono } from "hono";
 import { db } from '../db/database'
 import { task } from '../drizzle/schema'
 import { eq } from "drizzle-orm";
+import type { Context } from 'hono'
 
 const app = new Hono()
 
-app.get('/', async (c) => {
+app.get('/', async (c:Context) => {
   try{
     const allTasks = await db.select().from(task)  
     return c.json(allTasks,200)
@@ -16,7 +17,7 @@ app.get('/', async (c) => {
   })
 
 
-app.put("/complete-task/:id",async (c)=>{
+app.put("/complete-task/:id",async (c:Context)=>{
   const id = parseInt(c.req.param("id"));
   const {isCompleted} = await c.req.json<{isCompleted:boolean}>();
   const reverseIsCompleted = !isCompleted

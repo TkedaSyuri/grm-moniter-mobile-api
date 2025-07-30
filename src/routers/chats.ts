@@ -1,8 +1,8 @@
 
 import { Hono } from "hono";
 import { db } from '../db/database'
-import { chat, task } from '../drizzle/schema'
-import { eq } from "drizzle-orm";
+import { chat} from '../drizzle/schema'
+import type { Context } from 'hono'
 
 const app = new Hono()
 
@@ -15,7 +15,7 @@ app.get('/', async (c) => {
   }
   })
 
-  app.post("/create",async (c)=>{
+  app.post("/create",async (c: Context)=>{
     console.log("dsfa")
     const {newMessage} = await c.req.json<{newMessage:string}>()
     try{

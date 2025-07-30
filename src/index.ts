@@ -8,12 +8,14 @@ import chatRoute from "./routers/chats";
 const app = new Hono()
 app.use(cors())
 
+const PORT = process.env.PORT || 8080
+
 app.route("/api/room",roomRoute)
 app.route("/api/task",taskRoute)
 app.route("/api/chat",chatRoute)
 
 
-console.log("サーバー起動中 http://localhost:8080")
+console.log(`サーバー起動中 ${PORT}`)
 
 serve({
   fetch: app.fetch,
