@@ -2,14 +2,13 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",  
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "lib": ["ESNext", "dom"]
+    "lib": ["ESNext", "DOM"],
+    "types": ["node"]
   },
-  "typeRoots": ["./node_modules/@types", "./node_modules"],
-  "include": ["src"],
-  "types": ["node"]
+  "include": ["src"]
 }
