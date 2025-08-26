@@ -10,7 +10,7 @@ import chatRoute from './routers/chats'
 const app = new Hono()
 app.use(cors())
 
-const PORT = Number(process.env.PORT) || 8080
+const PORT = Number(process.env.PORT) || 10000
 
 const httpServer = serve({
   fetch: app.fetch,
@@ -36,4 +36,4 @@ io.on('connection', (socket) => {
   })
 })
 
-console.log(`サーバー起動中 🚀  http://localhost:${PORT}`)
+console.log(`サーバー起動中  http://localhost:${PORT}`)
