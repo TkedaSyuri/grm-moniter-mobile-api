@@ -1,6 +1,5 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
-import { cors } from "hono/cors";
 import { Server as SocketServer } from "socket.io";
 
 import roomRoute from "./routers/rooms";
@@ -8,13 +7,9 @@ import taskRoute from "./routers/tasks";
 import chatRoute from "./routers/chats";
 
 const app = new Hono();
-app.use(
-  cors({
-    origin: "*",
-  })
-);
+app.use();
 
-const PORT = Number(process.env.PORT) || 10000;
+const PORT = Number(process.env.PORT) || 8080;
 
 const httpServer = serve({
   fetch: app.fetch,
@@ -22,12 +17,7 @@ const httpServer = serve({
 });
 
 // socket.io を Honoサーバーにアタッチ
-export const io = new SocketServer(httpServer as any, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
-});
+export const io = new SocketServer(httpServer as any);
 
 app.route("/api/room", roomRoute);
 app.route("/api/task", taskRoute);
