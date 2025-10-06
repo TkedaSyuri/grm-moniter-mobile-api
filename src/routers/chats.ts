@@ -16,10 +16,10 @@ app.get("/", async (c) => {
 });
 
 app.post("/create", async (c: Context) => {
-  const { newMessage } = await c.req.json<{ newMessage: string }>();
+  const { newMessage,sender } = await c.req.json<{ newMessage: string,sender:string }>();
   try {
-    await db.insert(chat).values({ message: newMessage });
-    io.emit("updatedChat",{newMessage:newMessage});
+    await db.insert(chat).values({ message: newMessage,sender:sender });
+    io.emit("updatedChat",{newMessage:newMessage,sender:sender});
 
     return c.json({ message: "データの作成に成功" }, 200);
   } catch (e) {
