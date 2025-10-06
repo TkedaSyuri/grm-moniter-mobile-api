@@ -40,6 +40,7 @@ import {
   export const chat = pgTable('Chat', {
     id: serial('id').primaryKey(),
     message: varchar('message', { length: 255 }),
+    sender: varchar('sender', { length: 255 }),
     createdAt: timestamp('createdAt').defaultNow(),
   });
   
