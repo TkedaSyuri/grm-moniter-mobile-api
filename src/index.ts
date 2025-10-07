@@ -20,7 +20,7 @@ export const io = new SocketServer(httpServer as any)
 
 app.route('/api/room', roomRoute)
 app.route('/api/task', taskRoute)
-app.route('/api/chat', chatRoute)
+app.route('/api/chats', chatRoute)
 
 io.on('connection', (socket) => {
   console.log(`Socket connected: ${socket.id}`)

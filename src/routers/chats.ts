@@ -23,7 +23,7 @@ app.post("/create", async (c: Context) => {
 
     return c.json({ message: "データの作成に成功" }, 200);
   } catch (e) {
-    return c.json({ message: "データの作成に失敗" }, 500);
+    return c.json({ message: "データの作成に失敗" }, 500); 
   }
 });
 
