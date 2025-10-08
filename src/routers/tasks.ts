@@ -16,16 +16,18 @@ app.get("/", async (c: Context) => {
   }
 });
 
-app.put("/complete-task/:id", async (c: Context) => {
+app.put("/:id", async (c: Context) => {
   const id = parseInt(c.req.param("id"));
   const { isCompleted } = await c.req.json<{ isCompleted: boolean }>();
   const reverseIsCompleted = !isCompleted;
+
   try {
     await db
       .update(task)
       .set({ isCompleted: reverseIsCompleted })
       .where(eq(task.id, id));
-    io.emit("updatedTask", { id: id, taskState: isCompleted });
+
+    io.emit("updatedTask", { id, isCompleted: reverseIsCompleted });
 
     return c.json({ message: "データの更新に成功" }, 200);
   } catch (e) {

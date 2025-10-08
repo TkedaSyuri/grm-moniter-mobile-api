@@ -22,12 +22,13 @@ app.get("/:id", async (c: Context) => {
     return c.json({ message: "データを取得できませんでした" }, 500);
   }
 });
-app.put("/room-state/:id", async (c: Context) => {
-  const RoomId = parseInt(c.req.param("id"));
+
+app.put("/:id", async (c: Context) => {
+  const id = parseInt(c.req.param("id"));
   const { roomState } = await c.req.json<typeof room.$inferInsert>();
   try {
-    await db.update(room).set({ roomState }).where(eq(room.id, RoomId));
-    io.emit("updatedRoomState", { roomId: RoomId, roomState });
+    await db.update(room).set({ roomState }).where(eq(room.id, id));
+    io.emit("updatedRoomState", { roomId: id, roomState:roomState });
 
     return c.json({ message: "データの更新に成功しました" }, 200);
   } catch (e) {
@@ -35,9 +36,8 @@ app.put("/room-state/:id", async (c: Context) => {
   }
 });
 
-app.put("/is-consecutive-nights/:id", async (c: Context) => {
+app.put("/:id/is-consecutive-nights", async (c: Context) => {
   const isConsecutiveId = parseInt(c.req.param("id"));
-
   try {
     const currentIsConsecutiveNight = await db
       .select({ isConsecutiveNight: room.isConsecutiveNight })

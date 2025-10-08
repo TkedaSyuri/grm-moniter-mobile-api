@@ -15,7 +15,7 @@ app.get("/", async (c) => {
   }
 });
 
-app.post("/create", async (c: Context) => {
+app.post("/", async (c: Context) => {
   const { newMessage,sender } = await c.req.json<{ newMessage: string,sender:string }>();
   try {
     await db.insert(chat).values({ message: newMessage,sender:sender });
