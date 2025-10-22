@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { db } from "../db/database";
-import { chat } from "../drizzle/schema";
+import { chat, floor } from "../drizzle/schema";
 import type { Context } from "hono";
 import { io } from "..";
 
@@ -16,14 +16,28 @@ app.get("/", async (c) => {
 });
 
 app.post("/", async (c: Context) => {
-  const { newMessage,sender } = await c.req.json<{ newMessage: string,sender:string }>();
+  const { newMessage, sender, floorNumber } = await c.req.json<{
+    newMessage: string;
+    sender: string;
+    floorNumber: string;
+  }>();
   try {
-    await db.insert(chat).values({ message: newMessage,sender:sender });
-    io.emit("updatedChat",{newMessage:newMessage,sender:sender});
+    await db
+      .insert(chat)
+      .values({
+        message: newMessage,
+        sender: sender,
+        floorNumber: floorNumber,
+      });
+    io.emit("updatedChat", {
+      newMessage: newMessage,
+      sender: sender,
+      floorNumber: floorNumber,
+    });
 
     return c.json({ message: "データの作成に成功" }, 200);
   } catch (e) {
-    return c.json({ message: "データの作成に失敗" }, 500); 
+    return c.json({ message: "データの作成に失敗" }, 500);
   }
 });
 
