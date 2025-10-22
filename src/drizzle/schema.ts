@@ -41,6 +41,7 @@ import {
     id: serial('id').primaryKey(),
     message: varchar('message', { length: 255 }),
     sender: varchar('sender', { length: 255 }),
+    floorNumber: varchar('floorNumber',{length: 255}),
     createdAt: timestamp('createdAt').defaultNow(),
   });
   
