@@ -37,11 +37,10 @@ import {
   });
   
    //Chat テーブル
-  export const chat = pgTable('Chat', {
-    id: serial('id').primaryKey(),
-    message: varchar('message', { length: 255 }),
-    sender: varchar('sender', { length: 255 }),
-    floorNumber: varchar('floor_number',{length: 255}),
-    createdAt: timestamp('createdAt').defaultNow(),
-  });
-  
+export const chat = pgTable("Chat", {
+  id: serial("id").primaryKey(),
+  message: varchar("message", { length: 255 }).notNull(), 
+  sender: varchar("sender", { length: 255 }).default("housekeeper"), 
+  floorNumber: varchar("floorNumber", { length: 255 }), 
+  createdAt: timestamp("createdAt").defaultNow(),
+});  
